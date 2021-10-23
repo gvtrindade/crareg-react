@@ -1,21 +1,17 @@
 import React from "react";
-import { Documento } from "./components/Documento";
-import { FormCadastFuncionario } from "./components/FormCadastFuncionario";
-import { FormCadastGestor } from "./components/FormCadastGestor";
+import Documento from "./componentes/Documento"
+import CadastroFuncionario from "./componentes/CadastroFuncionario";
+import CadastroGestor from "./componentes/CadastroGestor";
 
 
-export class App extends React.Component {
-  render() {
-    return (
-      <>
-        <div className='botoes' id='botoesCadastro'>
-          <FormCadastFuncionario text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} />
-          <FormCadastGestor text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} />
-        </div>
-
-        <Documento />
-        
-      </>  
-    )
-  }
+export default function App() {
+  return (
+    <main>
+      <div className='botoes' id='botoesCadastro'>
+        <CadastroFuncionario text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} />
+        <CadastroGestor text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} />
+      </div>
+      <Documento />
+    </main>
+  )
 }
