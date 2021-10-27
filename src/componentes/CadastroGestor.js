@@ -22,31 +22,31 @@ export default function CadastroGestor() {
                         <strong style={{fontSize:'20px'}}>Insira informações do novo gestor:</strong>
 
                         <div>
-                            <label for="nomeGestor">Nome:</label>
+                            <label htmlFor="nomeGestor">Nome:</label>
                             <input type="text" id="nomeGestor" />
                         </div>
 
                         <div>
                             <label>Sexo:</label>
 
-                            <input type="radio" id="gestorMasc" name="gestorSexo" value="Masculino" checked />
-                            <label for="gestorMasc">Masculino</label>
+                            <input type="radio" id="gestorMasc" name="gestorSexo" value="Masculino" defaultChecked />
+                            <label htmlFor="gestorMasc">Masculino</label>
 
                             <input type="radio" id="gestorFem" name="gestorSexo" value="Feminino" />
-                            <label for="gestorFem">Feminino</label>
+                            <label htmlFor="gestorFem">Feminino</label>
                         </div>
 
                         <input type="checkbox" id="eGestordoContrato" />
-                        <label for="eGestordoContrato">Gestor do Contrato</label>
+                        <label htmlFor="eGestordoContrato">Gestor do Contrato</label>
 
                         <div>
-                            <label for="gestorSelecionado1">Gestores: </label>
+                            <label htmlFor="gestorSelecionado1">Gestores: </label>
                             <select id="gestorSelecionado1"></select>
-                            <input onClick="apagarGestor()" type="button" id="deletarGestor" value="Deletar" />
+                            <input type="button" id="deletarGestor" value="Deletar" />
                         </div>
 
                         <div className="botoes">
-                            <input onClick="cadastrarGestor()" type="button" id="cadastroGestor" value="Cadastrar" />
+                            <input type="button" id="cadastroGestor" value="Cadastrar" />
                             <input onClick={handleClick} type="button" id="cancelarGestor" value="Cancelar" />
                         </div>
 
