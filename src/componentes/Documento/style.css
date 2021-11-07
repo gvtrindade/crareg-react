@@ -1,0 +1,52 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+span {
+    color: red;
+}
+
+img {
+    width: 128px;
+    height: auto;
+}
+
+#hrA{
+    margin: 0;
+    border: none;
+    width: 100%;
+    height: 8px;
+    background-color: rgb(66, 62, 79);
+}
+
+#hrB{
+    margin: 0;
+    border: none;
+    width: 100%;
+    height: 5px;
+    background-color: rgb(248, 208, 112);
+}
+
+.documento {
+    margin-top: 1cm; /*Default: 2cm*/
+    /* margin-bottom: 3cm; */
+    margin-left: 3cm;
+    margin-right: 2cm;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.dataAtual {
+    text-align: right;
+}
+
+.botoes, .cabecalho, .assinatura, .rodape {
+    text-align: center;
+}
+
+.rodape {
+    font-size: 10px;
+}
+
+.setor {
+    text-align: left;
+}

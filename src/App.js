@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Documento from "./componentes/Documento"
-import CadastroFuncionario from "./componentes/CadastroFuncionario";
-import CadastroGestor from "./componentes/CadastroGestor";
-
+import Documento from "./componentes/Documento/index"
+import CadastroFuncionario from "./componentes/CadastroFuncionario/index";
+import CadastroGestor from "./componentes/CadastroGestor/index";
+import './estilos/App.css'
 
 export default function App() {
 
@@ -22,8 +22,8 @@ export default function App() {
   return (
     <main>
       <div className='botoes' id='botoesCadastro'>
-        <CadastroFuncionario text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} setCadastrarFuncionario={setCadastrarFuncionario} />
-        <CadastroGestor text={'Cadastrar Funcionário'} onClick={'FormCadastrarFuncionario'} />
+        <CadastroFuncionario text={'Cadastrar Funcionário'} setCadastrarFuncionario={setCadastrarFuncionario} />
+        <CadastroGestor text={'Cadastrar Funcionário'} />
       </div>
       <Documento cadastrarFuncionario={cadastrarFuncionario} />
     </main>

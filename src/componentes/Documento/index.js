@@ -1,11 +1,10 @@
-import brasao from '../imagens/brasao.png'; //Mudar brasão
-import rodape from '../imagens/rodape.jpg'; //Mudar rodapé
-import '../estilos/Documento.css';
+import brasao from '../../imagens/brasao.png'; //Mudar brasão
+import './style.css';
 
 export default function Documento({cadastrarFuncionario}) {
 
     return (
-        <div>
+        <div className='documento'>
             <div className='cabecalho'>          
                 <img id='imgBrasao' alt={'Brasão da República'} src={brasao} />
                 <p>Diretoria-Geral</p>
@@ -42,7 +41,7 @@ export default function Documento({cadastrarFuncionario}) {
                 <hr id='hrA' />
                 <hr id='hrB' />
                 <p> Edifíco Hoje do Amanhã | Rua da Esquerda – Bloco 10, Sala 357 | CEP: 12345-678 | Brasília-DF</p>
-                <p> Telefone: +55 (61) 1234-7070 | asus@dig.org.br</p>
+                <p> Telefone: +55 (99) 1234-7070 | asus@dig.org.br</p>
             </div>
         </div>   
     )

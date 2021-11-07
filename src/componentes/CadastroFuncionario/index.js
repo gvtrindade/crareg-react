@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { listaDeGestores, locaisDeTrabalho } from './DataFantasma';
-
+import { listaDeGestores, locaisDeTrabalho } from '../../DataFantasma';
+import '../../estilos/Form.css'
 
 const dataAtual = new Date();
 const mesPorExtenso = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
@@ -63,8 +63,7 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
                 } 
 
                 alert('Já existe um funcionário com esta identidade');
-                return [...prev];
-                
+                return [...prev];                
             }
         });
 
@@ -173,7 +172,7 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
 
     return (
         <div>
-            <button onClick={handleClick} name='mostrarModal' >Cadastrar Funcionário</button>
+            <button onClick={handleClick} className='button' name='mostrarModal' >Cadastrar Funcionário</button>
 
             <div style={tipoDisplay} className='form' id='formFuncionario'>
                 <div className='fundoForm'></div>
@@ -238,8 +237,8 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
                         </div>
 
                         <div className='botoes'>
-                            <input type='submit' value='Cadastrar' />
-                            <input onClick={resetarFormulario} type='button' id='cancelarFuncionario' value='Cancelar' />
+                            <input type='submit' className='button' value='Cadastrar' />
+                            <input onClick={resetarFormulario} type='button' id='cancelarFuncionario' className='button' value='Cancelar' />
                         </div>
 
                     </form>

@@ -1,5 +1,6 @@
-import { useState} from 'react';
-import { listaDeGestores } from './DataFantasma';
+import { useState } from 'react';
+import { listaDeGestores } from '../../DataFantasma';
+import '../../estilos/Form.css'
 
 export default function CadastroGestor() {
     
@@ -73,7 +74,7 @@ export default function CadastroGestor() {
 
     return (
         <div>
-            <button onClick={handleClick} name='mostrarModal'>Cadastrar Gestor</button>
+            <button onClick={handleClick} className='button' name='mostrarModal'>Cadastrar Gestor</button>
             <div style={tipoDisplay} className='form' id='formGestor'>
                 <div className='conteudoForm'>
                     <form onSubmit={handleSubmit} id='formulario' >
@@ -108,8 +109,8 @@ export default function CadastroGestor() {
                         <input type='button' name='deletarGestor' onClick={deletarGestor} value='Deletar' />
 
                         <div className='botoes'>
-                            <input type='submit' value='Cadastrar' />
-                            <input type='button' onClick={handleClick} name='cancelar' value='Cancelar' />
+                            <input type='submit' className='button' value='Cadastrar' />
+                            <input type='button' className='button' onClick={handleClick} name='cancelar' value='Cancelar' />
                         </div>
 
                     </form>
