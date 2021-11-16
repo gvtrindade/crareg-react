@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { listaDeGestores } from '../../DataFantasma';
 import '../../estilos/Form.css'
 
-export default function CadastroGestor() {
+export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
     
     const [displayType, setDisplayType] = useState('none')
     let tipoDisplay = { display: displayType }
@@ -32,14 +31,13 @@ export default function CadastroGestor() {
         mostrarModal();
     }
 
-    const [listaGestores, setListaGestores] = useState(listaDeGestores);
     const [gestorADeletar, setGestorADeletar] = useState(null)
     const deletarGestor = () => {
-        const indexGestorADeletar = listaGestores.findIndex(element => (
+        const indexGestorADeletar = listaDeGestores.findIndex(element => (
             element.nome === gestorADeletar
         ));
         console.log(indexGestorADeletar)
-        setListaGestores(prev => {
+        setListaDeGestores(prev => {
             return prev.filter((item, index) => index !== indexGestorADeletar);
         });
         resetarFormulario();
@@ -64,7 +62,7 @@ export default function CadastroGestor() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(dadosGestor);
-        setListaGestores(prev => [
+        setListaDeGestores(prev => [
             ...prev,
             dadosGestor
         ]);
@@ -102,7 +100,7 @@ export default function CadastroGestor() {
                         <label htmlFor='gestorSelecionado1'>Gestores: </label>
                         <select id='gestorSelecionado1' onChange={({ target }) => setGestorADeletar(target.value)} name='gestorADeletar' defaultValue=''>
                             <option style={{ display: 'none' }} disabled value=''>Escolha...</option>
-                            {listaGestores.map( (item, index) => (
+                            {listaDeGestores.map( (item, index) => (
                                 <option value={item.nome} key={index}>{item.nome}</option>
                             ))}
                         </select>

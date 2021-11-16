@@ -1,4 +1,5 @@
-export const listaDeGestores = [
+
+export const gestoresMock = [
     {
         nome: 'André Barros da Silva',
         genero: 'Masculino',
@@ -10,7 +11,7 @@ export const listaDeGestores = [
     }
 ]
 
-export const locaisDeTrabalho = [
+export const locaisMock = [
     'Restaurante dos Segundo Andar', 
     'Cafézinho do Amanhã', 
     'LanchONete', 

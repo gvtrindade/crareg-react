@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { listaDeGestores, locaisDeTrabalho } from '../../DataFantasma';
 import '../../estilos/Form.css'
 
 const dataAtual = new Date();
-const mesPorExtenso = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+const mesPorExtenso = [
+    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+];
 
-
-export default function CadastroFuncionario({ setCadastrarFuncionario }) {
+export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGestores, locaisDeTrabalho }) {
 
     const formulario = document.getElementById('formCadastroFuncionario');
     const listaNomes = document.getElementById('listaNomes');
@@ -50,29 +51,32 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
         }));
     }
 
+    const camposPreenchidos = () => {
+        const a = funcionarioAdicionado.nome !== undefined
+        const aa =  funcionarioAdicionado.nome !== ''
+        const b =  funcionarioAdicionado.genero !== undefined
+        const c = funcionarioAdicionado.identidade !== undefined 
+        const cc = funcionarioAdicionado.identidade !== ''
+        return (a && aa && b && c && cc);
+    }
+    
     const [listaFuncionarios, setListaFuncionarios] = useState([]);
     const adicionarFuncionario = () => {
-        const funcionarioExiste = listaFuncionarios.findIndex(element => (
-            element.identidade === funcionarioAdicionado.identidade
-        ));
-            
-        setListaFuncionarios(prev => {
-            if (funcionarioAdicionado.nome !== '' && funcionarioAdicionado.genero !== '' && funcionarioAdicionado.identidade !== '') {
-                if (funcionarioExiste === -1) {
-                    return [funcionarioAdicionado, ...prev];
-                } 
+        if(camposPreenchidos()){
+            const funcionarioExiste = listaFuncionarios.findIndex(element => (
+                element.identidade === funcionarioAdicionado.identidade
+            ));
 
+            if (funcionarioExiste === -1) {
+                setListaFuncionarios(prev => [funcionarioAdicionado, ...prev])
+            } else {
                 alert('Já existe um funcionário com esta identidade');
-                return [...prev];                
             }
-        });
-
-        document.getElementById('radioMasculino').checked = false;
-        document.getElementById('radioFeminino').checked = false;
-        setFuncionarioAdicionado({});
+            document.getElementById('radioMasculino').checked = false;
+            document.getElementById('radioFeminino').checked = false;
+            setFuncionarioAdicionado({});
+        }
     }
-
-    
 
     const removerFuncionario = funcionarioARemover => {
         setListaFuncionarios(prevState => {
@@ -80,44 +84,32 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
         });
     }
 
-    let listaFuncionario;
     const numFuncionarios = () => {
         if (listaNomes.childElementCount === 0) {
-            listaFuncionario = [funcionarioAdicionado];
-            return stringFuncionariosCadastrados(listaFuncionario);
-        } else {
-            return stringFuncionariosCadastrados(listaFuncionarios);
+            console.log('um funcionario');
+            return stringFuncionariosCadastrados([funcionarioAdicionado]);
+        } else if (camposPreenchidos() && listaNomes.childElementCount !== 0){
+            alert('Adicione o funcionário à lista antes de gerar o memorando.')
+            //Previnir o cadastro
         }
+
+        return stringFuncionariosCadastrados(listaFuncionarios);
     }
 
-    const stringFuncionariosCadastrados = lista => {
+    const stringFuncionariosCadastrados = list => {
         const funcionariosCadastrados = [];
-        lista.forEach(e => (funcionariosCadastrados.push(` ${e.nome}, sob identidade número ${e.identidade},`)));
+        list.forEach(e => (funcionariosCadastrados.push(` ${e.nome}, sob identidade número ${e.identidade},`)));
         return funcionariosCadastrados.join('');
     }
 
     const stringVinculacao = () => {
-        let existeHomem;
-        let variasPessoas;
 
         if (listaFuncionarios.length > 0) {
-            existeHomem = listaFuncionarios.some(item => item.genero === 'Masculino');
-            variasPessoas = listaFuncionarios.length > 1;
+            return listaFuncionarios.some(item => item.genero === 'Masculino') ? 'vinculados' : 'vinculadas';
         } else {
-            existeHomem = listaFuncionario.some(item => item.genero === 'Masculino');
-            variasPessoas = false;
+            return funcionarioAdicionado.genero === 'Masculino' ? 'vinculado' : 'vinculada';
         }
 
-
-        if (existeHomem && variasPessoas) {
-            return 'vinculados'
-        } else if (existeHomem && !variasPessoas) {
-            return 'vinculado'
-        } else if (!existeHomem && variasPessoas) {
-            return 'vinculadas'
-        } else {
-            return 'vinculada'
-        }
     }
 
     const stringDesempenho = () => {
@@ -127,9 +119,11 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
     const cargoDoAssinante = () => {
         const index = listaDeGestores.findIndex(element => (
             element.nome === dadosCadastro.assinante
-        ))
+        ));
+
         const eGestorDoContrato = 'gestorDoContrato' in listaDeGestores[index];
         const eHomem = listaDeGestores[index].genero === 'Masculino';
+
         if (eGestorDoContrato && eHomem) {
             return 'Gestor do Contrato';
         } else if (eGestorDoContrato && !eHomem) {
@@ -141,23 +135,11 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
         }
     }
 
-    const resetarFormulario = () => {
-        if (listaNomes.childElementCount > 0) {
-            while (listaNomes.firstChild) { listaNomes.firstChild.remove() };
-        }
-        formulario.reset();
-        setFuncionarioAdicionado({});
-        setDadosCadastro({});
-        mostrarModal();
-    }
-
     const handleSubmit = event => {
         event.preventDefault();
         setCadastrarFuncionario(() => ({
-            // setDadosCadastro((prev) => ({
-            // ...prev,
             ...dadosCadastro,
-            dia: dataAtual.getDate(),
+            dia: (dataAtual.getDate() < 10 ? '0' : '') + dataAtual.getDate(),
             mes: mesPorExtenso[dataAtual.getMonth()],
             ano: dataAtual.getFullYear(),
             funcionarios: numFuncionarios(),
@@ -169,6 +151,15 @@ export default function CadastroFuncionario({ setCadastrarFuncionario }) {
         resetarFormulario();
     }
 
+    const resetarFormulario = () => {
+        if (listaNomes.childElementCount > 0) {
+            while (listaNomes.firstChild) { listaNomes.firstChild.remove() };
+        }
+        formulario.reset();
+        setFuncionarioAdicionado({});
+        setDadosCadastro({}); //Nâo está funcionando!!
+        mostrarModal();
+    }
 
     return (
         <div>
