@@ -1,0 +1,55 @@
+span {
+  color: red;
+}
+
+img {
+  width: 128px;
+  height: auto;
+}
+
+.memo {
+  margin-top: 1cm; /*Default: 2cm*/
+  /* margin-bottom: 3cm; */
+  margin-left: 3cm;
+  margin-right: 2cm;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.no-spacing *{
+  margin: 0;
+  padding: 0;
+}
+
+.memoHeader,
+.signature,
+.memoFooter {
+  text-align: center;
+}
+
+.memoFooter {
+  font-size: 10px;
+}
+
+.departament {
+  text-align: left;
+}
+
+#currentDate {
+  text-align: right;
+}
+
+#hrA {
+  margin: 0;
+  border: none;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(66, 62, 79);
+}
+
+#hrB {
+  margin: 0;
+  border: none;
+  width: 100%;
+  height: 3px;
+  background-color: rgb(248, 208, 112);
+}

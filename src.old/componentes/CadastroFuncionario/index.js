@@ -7,15 +7,15 @@ const mesPorExtenso = [
     'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
 ];
 
-export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGestores, locaisDeTrabalho }) {
-
-    const formulario = document.getElementById('formCadastroFuncionario');
-    const listaNomes = document.getElementById('listaNomes');
+export default function CadastroFuncionario({ setDadosDoMemorando, listaDeGestores, locaisDeTrabalho }) {
 
     const handleClick = ({ target }) => {
         switch (target.name) {
             case 'mostrarModal':
                 mostrarModal();
+                break;
+            case 'cancelar':
+                cancelarFormulario();
                 break;
             case 'adicionarFuncionario':
                 adicionarFuncionario();
@@ -25,12 +25,34 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
         }
     }
 
+
     const [displayType, setDisplayType] = useState('none');
     let tipoDisplay = { display: displayType };
 
     const mostrarModal = () => {
         displayType === 'none' ? setDisplayType('inline') : setDisplayType('none');
     }
+
+    window.onclick = function (event) {
+        if (event.target.className === 'form') {
+            cancelarFormulario();
+        }
+    }
+
+
+    const formulario = document.getElementById('formCadastroFuncionario');
+    const listaNomes = document.getElementById('listaNomes');
+
+    const cancelarFormulario = () => {
+        if (listaNomes.childElementCount > 0) {
+            while (listaNomes.firstChild) { listaNomes.firstChild.remove() };
+        }
+        formulario.reset();
+        setNovoFuncionario({});
+        setDadosCadastro({}); //Nâo está funcionando!!
+        mostrarModal();
+    }
+
 
     const [dadosCadastro, setDadosCadastro] = useState({})
 
@@ -42,39 +64,42 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
         }));
     }
 
-    const [funcionarioAdicionado, setFuncionarioAdicionado] = useState({})
-    const handleChangeFunc = ({ target }) => {
+    const [novoFuncionario, setNovoFuncionario] = useState(new Funcionario())
+    const handleChangeNovoFuncionario = ({ target }) => {
         const { name, value } = target;
-        setFuncionarioAdicionado((prev) => ({
+        setNovoFuncionario((prev) => ({
             ...prev,
             [name]: value
         }));
     }
 
-    const camposPreenchidos = () => {
-        const a = funcionarioAdicionado.nome !== undefined
-        const aa =  funcionarioAdicionado.nome !== ''
-        const b =  funcionarioAdicionado.genero !== undefined
-        const c = funcionarioAdicionado.identidade !== undefined 
-        const cc = funcionarioAdicionado.identidade !== ''
-        return (a && aa && b && c && cc);
-    }
     
+    const formularioDeFuncionarioEstaCompleto = () => {
+        return (
+            novoFuncionario.nome !== undefined &&
+            novoFuncionario.nome !== '' &&
+            novoFuncionario.genero !== undefined &&
+            novoFuncionario.identidade !== undefined &&
+            novoFuncionario.identidade !== ''
+        );
+    }
+
     const [listaFuncionarios, setListaFuncionarios] = useState([]);
+    //Ao clicar em cadastrar funcionario depois de já ter cadastrado algum, carregar os dados já preenchidos no formulário
     const adicionarFuncionario = () => {
-        if(camposPreenchidos()){
+        if (formularioDeFuncionarioEstaCompleto()) {
             const funcionarioExiste = listaFuncionarios.findIndex(element => (
-                element.identidade === funcionarioAdicionado.identidade
+                element.identidade === novoFuncionario.identidade
             ));
 
             if (funcionarioExiste === -1) {
-                setListaFuncionarios(prev => [funcionarioAdicionado, ...prev])
+                setListaFuncionarios(prev => [novoFuncionario, ...prev])
             } else {
                 alert('Já existe um funcionário com esta identidade');
             }
             document.getElementById('radioMasculino').checked = false;
             document.getElementById('radioFeminino').checked = false;
-            setFuncionarioAdicionado({});
+            setNovoFuncionario(new Funcionario('','',''));
         }
     }
 
@@ -87,8 +112,8 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
     const numFuncionarios = () => {
         if (listaNomes.childElementCount === 0) {
             console.log('um funcionario');
-            return stringFuncionariosCadastrados([funcionarioAdicionado]);
-        } else if (camposPreenchidos() && listaNomes.childElementCount !== 0){
+            return stringFuncionariosCadastrados([novoFuncionario]);
+        } else if (formularioDeFuncionarioEstaCompleto() && listaNomes.childElementCount !== 0) {
             alert('Adicione o funcionário à lista antes de gerar o memorando.')
             //Previnir o cadastro
         }
@@ -102,15 +127,15 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
         return funcionariosCadastrados.join('');
     }
 
-    const stringVinculacao = () => {
+    // const stringVinculo = () => {
 
-        if (listaFuncionarios.length > 0) {
-            return listaFuncionarios.some(item => item.genero === 'Masculino') ? 'vinculados' : 'vinculadas';
-        } else {
-            return funcionarioAdicionado.genero === 'Masculino' ? 'vinculado' : 'vinculada';
-        }
+    //     if (listaFuncionarios.length > 0) {
+    //         return listaFuncionarios.some(item => item.genero === 'Masculino') ? 'vinculados' : 'vinculadas';
+    //     } else {
+    //         return novoFuncionario.genero === 'Masculino' ? 'vinculado' : 'vinculada';
+    //     }
 
-    }
+    // }
 
     const stringDesempenho = () => {
         return listaFuncionarios.length > 1 ? 'desempenharão' : 'desempenhará'
@@ -137,28 +162,21 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
 
     const handleSubmit = event => {
         event.preventDefault();
-        setCadastrarFuncionario(() => ({
+        //Verificar se vetor de funcionarios esta vazio
+        //Inserir automaticamente funcionarios à lista
+
+        setDadosDoMemorando(() => ({
             ...dadosCadastro,
             dia: (dataAtual.getDate() < 10 ? '0' : '') + dataAtual.getDate(),
             mes: mesPorExtenso[dataAtual.getMonth()],
             ano: dataAtual.getFullYear(),
             funcionarios: numFuncionarios(),
-            vinculado: stringVinculacao(),
+            // vinculado: stringVinculo(),
             desempenhara: stringDesempenho(),
             cargo: cargoDoAssinante()
         }));
 
-        resetarFormulario();
-    }
-
-    const resetarFormulario = () => {
-        if (listaNomes.childElementCount > 0) {
-            while (listaNomes.firstChild) { listaNomes.firstChild.remove() };
-        }
-        formulario.reset();
-        setFuncionarioAdicionado({});
-        setDadosCadastro({}); //Nâo está funcionando!!
-        mostrarModal();
+        cancelarFormulario();
     }
 
     return (
@@ -200,20 +218,20 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
                         <br />
 
                         <label htmlFor='nomeFuncionario'>Nome:</label>
-                        <input type='text' onChange={handleChangeFunc} id='nomeFuncionario' name='nome' value={funcionarioAdicionado.nome || ''} />
+                        <input type='text' onChange={handleChangeNovoFuncionario} id='nomeFuncionario' name='nome' value={novoFuncionario.nome || ''} />
 
                         <br />
                         <label>Gênero:</label>
 
-                        <input type='radio' onChange={handleChangeFunc} id='radioMasculino' name='genero' value={funcionarioAdicionado.genero || 'Masculino'} />
+                        <input type='radio' onChange={handleChangeNovoFuncionario} id='radioMasculino' name='genero' value={novoFuncionario.genero || 'Masculino'} />
                         <label htmlFor='radioMasculino'>Masculino</label>
 
-                        <input type='radio' onChange={handleChangeFunc} id='radioFeminino' name='genero' value={funcionarioAdicionado.genero || 'Feminino'} />
+                        <input type='radio' onChange={handleChangeNovoFuncionario} id='radioFeminino' name='genero' value={novoFuncionario.genero || 'Feminino'} />
                         <label htmlFor='radioFeminino'>Feminino</label>
 
                         <br />
                         <label htmlFor='idFuncionario'>Identidade:</label>
-                        <input type='text' onChange={handleChangeFunc} id='idFuncionario' name='identidade' value={funcionarioAdicionado.identidade || ''} />
+                        <input type='text' onChange={handleChangeNovoFuncionario} id='idFuncionario' name='identidade' value={novoFuncionario.identidade || ''} />
 
                         <input type='button' name='adicionarFuncionario' onClick={handleClick} value='+' />
 
@@ -229,7 +247,7 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
 
                         <div className='botoes'>
                             <input type='submit' className='button' value='Cadastrar' />
-                            <input onClick={resetarFormulario} type='button' id='cancelarFuncionario' className='button' value='Cancelar' />
+                            <input onClick={cancelarFormulario} type='button' id='cancelarFuncionario' className='button' value='Cancelar' />
                         </div>
 
                     </form>
@@ -238,3 +256,4 @@ export default function CadastroFuncionario({ setCadastrarFuncionario, listaDeGe
         </div>
     )
 }
+

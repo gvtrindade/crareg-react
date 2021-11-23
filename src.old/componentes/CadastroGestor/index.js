@@ -3,16 +3,13 @@ import '../../estilos/Form.css'
 
 export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
     
-    const [displayType, setDisplayType] = useState('none')
-    let tipoDisplay = { display: displayType }
-
     const handleClick = ({ target }) => {
         switch (target.name) {
             case 'mostrarModal':
                 mostrarModal();
                 break;
             case 'cancelar':
-                cancelarForm();
+                cancelarFormulario();
                 break;
             case 'deletarGestor':
                 deletarGestor();
@@ -21,13 +18,24 @@ export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
                 console.log('Valor inexperado')
         }
     }
-
+    
+    const [displayType, setDisplayType] = useState('none')
+    let tipoDisplay = { display: displayType }
+    
     const mostrarModal = () => {
         displayType === 'none' ? setDisplayType('inline') : setDisplayType('none');
     }
 
-    const cancelarForm = () => {
+    window.onclick = function(event) {
+        if (event.target.className === 'form') {
+            cancelarFormulario();
+        }
+    }
+
+    const formulario = document.getElementById('formulario')
+    const cancelarFormulario = () => {
         formulario.reset();
+        setDadosGestor({});
         mostrarModal();
     }
 
@@ -40,7 +48,7 @@ export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
         setListaDeGestores(prev => {
             return prev.filter((item, index) => index !== indexGestorADeletar);
         });
-        resetarFormulario();
+        cancelarFormulario();
     }
 
     const [dadosGestor, setDadosGestor] = useState({})
@@ -52,13 +60,6 @@ export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
         }));
     }
 
-    const formulario = document.getElementById('formulario')
-    const resetarFormulario = () => {
-        formulario.reset();
-        setDadosGestor({});
-        mostrarModal();
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(dadosGestor);
@@ -66,7 +67,7 @@ export default function CadastroGestor({ listaDeGestores, setListaDeGestores}) {
             ...prev,
             dadosGestor
         ]);
-        resetarFormulario();
+        cancelarFormulario();
         // return dataGestor
     }
 

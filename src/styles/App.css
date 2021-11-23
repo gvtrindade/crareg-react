@@ -1,0 +1,12 @@
+body{
+    /* background-color: rgb(83, 82, 82); */
+    padding: 0;
+    margin: 0;
+}
+
+.modals {
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
