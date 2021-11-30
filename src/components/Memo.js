@@ -2,44 +2,7 @@ import shieldOfArms from '../images/shieldOfArms.png';
 import '../styles/Memo.css';
 
 export default function Memo({ memoData }) {
-  const getEmployeesString = () => {
-    const string = [];
-    memoData.employees.forEach((employee) =>
-      string.push(` ${employee.name}, sob identidade número ${employee.id},`)
-    );
-    return string.join('');
-  };
 
-  const getBondTypeString = () => {
-    if (memoData.employees.length > 1) {
-      return memoData.employees.some((employee) => employee.isMale === 'true')
-        ? 'vinculados'
-        : 'vinculadas';
-    } else {
-      // return memoData.employees[0].isMale === 'true'
-      //   ? 'vinculado'
-      //   : 'vinculada';
-    }
-  };
-
-  const getRoleWillPlayString = () => {
-    return memoData.employees.length > 1 ? 'desempenharão' : 'desempenhará';
-  };
-
-  const getSignerIsManagerString = () => {
-    const isManager = memoData.signer.isManager === 'on';
-    const isMale = memoData.signer.isMale === 'true';
-
-    if (isManager && isMale) {
-      return 'Gestor do Contrato';
-    } else if (isManager && !isMale) {
-      return 'Gestora do Contrato';
-    } else if (!isManager && isMale) {
-      return 'Subgestor do Contrato';
-    } else {
-      return 'Subgestora do Contrato';
-    }
-  };
 
   return (
     <div className="memo">
@@ -58,9 +21,9 @@ export default function Memo({ memoData }) {
           <strong>
             {' '}
             Memorando nº{' '}
-            <span id="memoNumber">{memoData.number || '"Número"'}</span>/
+            <span id="memoNumber">{memoData?.number || '"Número"'}</span>/
             <span className="currentYear">
-              {memoData.currentYear || '"Ano"'}
+              {memoData?.currentYear || '"Ano"'}
             </span>{' '}
             - ASuS/DiG
           </strong>
@@ -68,9 +31,9 @@ export default function Memo({ memoData }) {
 
         <p id="currentDate">
           Brasília,{' '}
-          <span id="currentDay">{memoData.currentDay || '"Dia"'}</span> de{' '}
-          <span id="currentMonth">{memoData.currentMonth || '"Mês"'}</span> de{' '}
-          <span className="currentYear">{memoData.currentYear || '"Ano"'}</span>
+          <span id="currentDay">{memoData?.currentDay || '"Dia"'}</span> de{' '}
+          <span id="currentMonth">{memoData?.currentMonth || '"Mês"'}</span> de{' '}
+          <span className="currentYear">{memoData?.currentYear || '"Ano"'}</span>
         </p>
 
         <div className="no-spacing">
@@ -89,19 +52,19 @@ export default function Memo({ memoData }) {
           Solicitamos autorização para confecção de crachá de identificação
           funcional (primeiro crachá) para
           <span id="employeeList">
-            {getEmployeesString() || '"funcionári@(s)"'}
+            {memoData?.employeesInfo || '"funcionári@(s)"'}
             {/* {'"funcionári@(s)"'} */}
           </span>{' '}
-          <span id="bondType">{getBondTypeString() || '"vinculad@(s)"'}</span>{' '}
+          <span id="bondType">{memoData?.employeesBond || '"vinculad@(s)"'}</span>{' '}
           {/* <span id="bondType">{'"vinculad@(s)"'}</span> ao SEA - Serviço de */}
           Ensinamento de Aprendizes por meio do Pregão 0001/11, vigente até
           25/05/25, que{' '}
           <span id="roleWillPlay">
-            {getRoleWillPlayString() || '"desempenhará(o)"'}
+            {memoData?.employeesRole || '"desempenhará(o)"'}
             {/* {'"desempenhará(o)"'} */}
           </span>{' '}
           suas atividades laborais no{' '}
-          <span id="place">{memoData.place || '"local"'}</span>.
+          <span id="place">{memoData?.place || '"local"'}</span>.
         </p>
 
         <p>
@@ -114,13 +77,13 @@ export default function Memo({ memoData }) {
         <div className="signature">
           <p>(Assinado Digitalmente)</p>
           <p>
-            <span id="signer">{memoData.signer.name || '"Assinante"'}</span>
+            <span id="signer">{memoData?.signer?.name || '"Assinante"'}</span>
             {/* <span id="signer">{'"Assinante"'}</span> */}
           </p>
           <p>Assessoria de Suporte aos Servidores - ASuS</p>
           <p>
             <span id="signerRole">
-              {getSignerIsManagerString() || '"Cargo"'}
+              {memoData?.signerRole || '"Cargo"'}
             </span>{' '}
             {/* <span id="signerRole">{'"Cargo"'}</span>{' '} */}
           </p>

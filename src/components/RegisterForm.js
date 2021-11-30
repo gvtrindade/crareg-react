@@ -75,14 +75,11 @@ export default function RegisterForm({ memoData, setMemoData, signers }) {
     setDisplayedEmployees((prevState) => {
       return prevState.filter((employee) => employee.id !== removedEmployee.id);
     });
-    console.log(employees);
   };
 
   const resetModal = () => {
     document.getElementById('memoForm').reset();
-    setName('');
-    setIsMale('');
-    setId('');
+    clearEmployeeFields();
     employees = [];
     setDisplayedEmployees([]);
     setDisplayType('none');
